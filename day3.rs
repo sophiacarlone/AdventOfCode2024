@@ -20,12 +20,12 @@ fn main(){
     let mut sum1 = 0;
 
     let mut seq = String::new();
-    // let mut mul1: i8 = 0; //said it only goes up to three digits
+    let mut enabled_seq = String::new();
     let mut mul1str = String::new();
     let mut mul2str = String::new();
+    let mut enabled = true;
 
     for c in s.chars(){
-        // println!("{}", c);
         if c == 'm' { seq.push('m'); }
         else if c == 'u' && seq == "m" { seq.push(c); }
         else if c == 'l' && seq == "mu" { seq.push(c); }
@@ -35,28 +35,32 @@ fn main(){
         else if c.is_digit(10) && seq == "mul(," { mul2str.push(c); }
         else if c == ')' && seq == "mul(," { 
             seq.push(c); //for my sanity
-            println!("{}, {}, {}", seq, mul1str, mul2str);
-            sum1 = sum1 + (mul1str.parse::<i32>().unwrap() * mul2str.parse::<i32>().unwrap());
+            if enabled {
+                sum1 = sum1 + (mul1str.parse::<i32>().unwrap() * mul2str.parse::<i32>().unwrap());
+            }
             seq.clear(); 
             mul1str.clear();
             mul2str.clear();
+            enabled_seq.clear();
+        }
+        else if c == 'd' { enabled_seq.push(c); }
+        else if c == 'o' && enabled_seq == "d" { 
+            enabled_seq.push(c);
+            enabled = true; 
+        }
+        else if c == 'n' && enabled_seq == "do" { enabled_seq.push(c); }
+        else if c == '\'' && enabled_seq == "don" { enabled_seq.push(c); }
+        else if c == 't' && enabled_seq == "don'" { 
+            enabled_seq.push(c);
+            enabled = false;
         }
         else { 
             seq.clear(); 
             mul1str.clear();
             mul2str.clear();
+            enabled_seq.clear();
         }
     }
     
     println!("{}", sum1);
 }
-
-//garbage collection
-// for i in 0..s.len(){
-    //     let mut sub = &s[i..];
-    //     match sub.find("mul"){
-    //         Some(i) => {},
-    //         None => break,
-    //     };
-    //     println!("{}", sub);
-    // }
