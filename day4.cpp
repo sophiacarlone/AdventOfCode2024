@@ -49,11 +49,6 @@ int main()
         v.clear();
         lineNum++;
     }
-    // for(int i = 0; i < puzzle.size(); i++){
-    //     for (int j = 0; j < puzzle[i].size(); j++)
-    //         cout << puzzle[i][j];
-    //     cout << endl;
-    // }
     rowMax = puzzle.size();
     colMax = puzzle[0].size();
 
@@ -61,9 +56,7 @@ int main()
     for(int i = 0; i < rowMax; i++){
         for (int j = 0; j < colMax; j++){
             if(puzzle[i][j] == START){ 
-                cout << "found x at " << i << ", " << j << " where it is " << puzzle[i][j] << endl;
                 neighbors(0, ALL, i, j);
-                //cout << "found x at " << i << ", " << j << " where it is " << puzzle[i][j] << endl;
             }
         }
     }
@@ -78,7 +71,6 @@ void neighbors(int letter, int direction, int row, int col){
     cout << "letter is: " << letter << " at " << row << ", "<< col << endl;
     if(letter == COMPLETION){
         cout << "hit" <<endl;
-        // cout << "hit where " << letter << " is letter and " << prev << " came before" << endl;
         sum++;
         return;
     }
@@ -86,7 +78,6 @@ void neighbors(int letter, int direction, int row, int col){
         if((direction == ALL || direction == UPLEFTDIAGONAL)&&((col - 1) >= 0)){ //(row-1, col-1)
             if(puzzle[row-1][col-1] == letter + 1){
                 neighbors(letter+1, UPLEFTDIAGONAL, row-1, col-1);
-                // cout << "hit where " << letter << " is letter and " << prev << " came before" << endl;
             }
         }
         if((direction == ALL || direction == UPRIGHTDIAGONAL)&&((col + 1) < colMax)){//(row-1, col+1)
