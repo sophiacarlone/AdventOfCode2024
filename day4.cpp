@@ -83,30 +83,31 @@ void neighbors(int letter, int direction, int row, int col){
         return;
     }
     if((row - 1) >= 0) {
-        if((col - 1) >= 0){ //(row-1, col-1)
+        if((direction == ALL || direction == UPLEFTDIAGONAL)&&((col - 1) >= 0)){ //(row-1, col-1)
             if(puzzle[row-1][col-1] == letter + 1){
-                neighbors(letter+1, letter, row-1, col-1);
+                neighbors(letter+1, UPLEFTDIAGONAL, row-1, col-1);
                 // cout << "hit where " << letter << " is letter and " << prev << " came before" << endl;
             }
         }
-        if((col + 1) < colMax){//(row-1, col+1)
-            if(puzzle[row-1][col+1] == letter + 1) neighbors(letter+1, letter, row-1, col+1);
+        if((direction == ALL || direction == UPRIGHTDIAGONAL)&&((col + 1) < colMax)){//(row-1, col+1)
+            if(puzzle[row-1][col+1] == letter + 1) neighbors(letter+1, UPRIGHTDIAGONAL, row-1, col+1);
         }
-        if(puzzle[row-1][col] == letter + 1) neighbors(letter+1, letter, row-1, col);//(row-1, col)
+        if((direction == ALL || direction == UP)&&(puzzle[row-1][col] == letter + 1)) 
+            neighbors(letter+1, UP, row-1, col);//(row-1, col)
     }    
     if((row + 1) < rowMax) {
-        if((col - 1) >= 0){//(row+1, col-1)
-            if(puzzle[row+1][col-1] == letter + 1) neighbors(letter+1, letter, row+1, col-1);
+        if((direction == ALL || direction == DOWNLEFTDIAGONAL)&&((col - 1) >= 0)){//(row+1, col-1)
+            if(puzzle[row+1][col-1] == letter + 1) neighbors(letter+1, DOWNLEFTDIAGONAL, row+1, col-1);
         }
-        if((col + 1) < colMax){//(row+1, col+1)
-            if(puzzle[row+1][col+1] == letter + 1) neighbors(letter+1, letter, row+1, col+1);
+        if((direction == ALL || direction == DOWNRIGHTDIAGONAL)&&((col + 1) < colMax)){//(row+1, col+1)
+            if(puzzle[row+1][col+1] == letter + 1) neighbors(letter+1, DOWNRIGHTDIAGONAL, row+1, col+1);
         }
-        if(puzzle[row+1][col] == letter + 1) neighbors(letter+1, letter, row+1, col);//(row+1, col)
+        if((direction == ALL || direction == DOWN)&&(puzzle[row+1][col] == letter + 1)) neighbors(letter+1, DOWN, row+1, col);//(row+1, col)
     }
-    if((col - 1) >= 0){//(row, col-1)
-        if(puzzle[row][col-1] == letter + 1) neighbors(letter+1, letter, row, col-1);
+    if((direction == ALL || direction == LEFT)&&((col - 1) >= 0)){//(row, col-1)
+        if(puzzle[row][col-1] == letter + 1) neighbors(letter+1, LEFT, row, col-1);
     }
-    if((col + 1) < colMax){//(row, col+1)
-        if(puzzle[row][col+1] == letter + 1) neighbors(letter+1, letter, row, col+1);
+    if((direction == ALL || direction == RIGHT)&&((col + 1) < colMax)){//(row, col+1)
+        if(puzzle[row][col+1] == letter + 1) neighbors(letter+1, RIGHT, row, col+1);
     }
 }
