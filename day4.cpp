@@ -7,17 +7,29 @@
 
 using namespace std;
 
-#define COMPLETION 4 //end of the needed word
+#define START 0 //start of the needed word
+#define COMPLETION 3 //end of the needed word
+
+//Directions
+#define UPLEFTDIAGONAL 0  
+#define UP 1  
+#define UPRIGHTDIAGONAL 2  
+#define LEFT 3  
+#define RIGHT 4  
+#define DOWNLEFTDIAGONAL 5  
+#define DOWN 6  
+#define DOWNRIGHTDIAGONAL 7  
+#define ALL 8  
 
 //Globals
 int rowMax;
 int colMax;
 int sum;
 vector<vector<int>> puzzle; //would like to avoid the heap if possible, but idk
-const map<char, int> m = {{'X', 1}, {'M', 2}, {'A', 3}, {'S', 4}};
+const map<char, int> m = {{'X', 0}, {'M', 1}, {'A', 2}, {'S', 3}};
     
 //Functions
-void neighbors(int letter, int row, int col);
+void neighbors(int letter, int direction, int row, int col);
 
 int main()
 {
@@ -48,44 +60,53 @@ int main()
     //Part 1
     for(int i = 0; i < rowMax; i++){
         for (int j = 0; j < colMax; j++){
-            if(puzzle[i][j] == 0) neighbors(0, i, j);
-            cout << "found x at " << i << ", " << j << " where it is " << puzzle[i][j] << endl;
+            if(puzzle[i][j] == START){ 
+                cout << "found x at " << i << ", " << j << " where it is " << puzzle[i][j] << endl;
+                neighbors(0, ALL, i, j);
+                //cout << "found x at " << i << ", " << j << " where it is " << puzzle[i][j] << endl;
+            }
         }
     }
 
-    cout << sum;
+    cout << sum << endl;
 
     file.close();
     return 0;
 }
 
-void neighbors(int letter, int row, int col){
+void neighbors(int letter, int direction, int row, int col){
+    cout << "letter is: " << letter << " at " << row << ", "<< col << endl;
     if(letter == COMPLETION){
+        cout << "hit" <<endl;
+        // cout << "hit where " << letter << " is letter and " << prev << " came before" << endl;
         sum++;
         return;
     }
     if((row - 1) >= 0) {
         if((col - 1) >= 0){ //(row-1, col-1)
-            if(puzzle[row-1][col-1] == letter + 1) neighbors(letter+1, row-1, col-1);
+            if(puzzle[row-1][col-1] == letter + 1){
+                neighbors(letter+1, letter, row-1, col-1);
+                // cout << "hit where " << letter << " is letter and " << prev << " came before" << endl;
+            }
         }
         if((col + 1) < colMax){//(row-1, col+1)
-            if(puzzle[row-1][col+1] == letter + 1) neighbors(letter+1, row-1, col+1);
+            if(puzzle[row-1][col+1] == letter + 1) neighbors(letter+1, letter, row-1, col+1);
         }
-        if(puzzle[row-1][col] == letter + 1) neighbors(letter+1, row-1, col);//(row-1, col)
+        if(puzzle[row-1][col] == letter + 1) neighbors(letter+1, letter, row-1, col);//(row-1, col)
     }    
     if((row + 1) < rowMax) {
         if((col - 1) >= 0){//(row+1, col-1)
-            if(puzzle[row+1][col-1] == letter + 1) neighbors(letter+1, row+1, col-1);
+            if(puzzle[row+1][col-1] == letter + 1) neighbors(letter+1, letter, row+1, col-1);
         }
         if((col + 1) < colMax){//(row+1, col+1)
-            if(puzzle[row+1][col+1] == letter + 1) neighbors(letter+1, row+1, col+1);
+            if(puzzle[row+1][col+1] == letter + 1) neighbors(letter+1, letter, row+1, col+1);
         }
-        if(puzzle[row+1][col] == letter + 1) neighbors(letter+1, row+1, col);//(row+1, col)
+        if(puzzle[row+1][col] == letter + 1) neighbors(letter+1, letter, row+1, col);//(row+1, col)
     }
     if((col - 1) >= 0){//(row, col-1)
-        if(puzzle[row][col-1] == letter + 1) neighbors(letter+1, row, col-1);
+        if(puzzle[row][col-1] == letter + 1) neighbors(letter+1, letter, row, col-1);
     }
     if((col + 1) < colMax){//(row, col+1)
-        if(puzzle[row][col+1] == letter + 1) neighbors(letter+1, row, col+1);
+        if(puzzle[row][col+1] == letter + 1) neighbors(letter+1, letter, row, col+1);
     }
 }
